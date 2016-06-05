@@ -1,0 +1,35 @@
+extends layout
+
+block content
+	.content
+		.status
+			| Zip codes searched: 
+			each s, i in status
+				span(class='status' + s.code)= s.zip
+				if i != status.length - 1
+						, 
+			|  - #{properties.length} resuts 
+			a(href='/?openHouse=true') (Open Houses)
+		each item in properties
+			.listing
+				- var address = item.filteredAddress + ', ' + item.cityPostalName + ', ' + item.postalCode + ', ' + item.stateOrProvinceName
+				.header
+					a(href=item.siteMapDetailUrlPath)
+						span.price= item.formattedSalePrice
+						= address
+				div.photo
+					a(href=item.siteMapDetailUrlPath)
+						img(class='polaroid', src=item.photoURL)
+				div.description
+					ul
+						li
+							span(style='font-weight: bold;') #{item.beds}, #{item.baths}, #{item.structureSqFt} SqFt.
+						li #{item.subClass}, #{item.lotSizeArea} lot
+						li Age: #{item.yearAge}
+						li Updated: #{item.lastModifiedDate}
+					ul
+						li
+							a(href='/school?q=' + encodeURIComponent(address)) Schools
+				div.map
+					a(href='http://maps.google.com/maps?q=' + address)
+						img(class='polaroid', src='/map?q=' + encodeURIComponent(address))
